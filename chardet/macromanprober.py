@@ -28,6 +28,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301  USA
 ######################### END LICENSE BLOCK #########################
+from chardet.compat import wrap_ord
 from functools import reduce
 
 from .charsetprober import CharSetProber
@@ -126,10 +127,7 @@ class MacRomanProber(CharSetProber):
     def feed(self, aBuf):
         aBuf = self.filter_with_english_letters(aBuf)
         for c in aBuf:
-            try:
-                charClass = MacRoman_CharToClass[ord(c)]
-            except IndexError:
-                return constants.eError
+            charClass = MacRoman_CharToClass[wrap_ord(c)]
             freq = MacRomanClassModel[(self._mLastCharClass * CLASS_NUM) + charClass]
             if freq == 0:
                 self._mState = constants.eNotMe
