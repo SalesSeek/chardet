@@ -33,6 +33,7 @@ from .latin1prober import Latin1Prober  # windows-1252
 from .mbcsgroupprober import MBCSGroupProber  # multi-byte character sets
 from .sbcsgroupprober import SBCSGroupProber  # single-byte character sets
 from .escprober import EscCharSetProber  # ISO-2122, etc.
+from macromanprober import MacRomanProber # MacRoman
 import re
 
 MINIMUM_THRESHOLD = 0.20
@@ -123,7 +124,7 @@ class UniversalDetector:
         elif self._mInputState == eHighbyte:
             if not self._mCharSetProbers:
                 self._mCharSetProbers = [MBCSGroupProber(), SBCSGroupProber(),
-                                         Latin1Prober()]
+                                         Latin1Prober(), MacRomanProber()]
             for prober in self._mCharSetProbers:
                 if prober.feed(aBuf) == constants.eFoundIt:
                     self.result = {'encoding': prober.get_charset_name(),
